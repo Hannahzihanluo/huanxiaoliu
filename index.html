@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>焕分小六 — 家庭亲子助手</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Markdown渲染库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 代码高亮库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/atom-one-light.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/languages/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/languages/python.min.js"></script>
+</head>
+<body>
+<div class="app">
+    <!-- 会话历史侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>对话历史</h3>
+            <button id="new-chat-btn" class="icon-btn" title="新建对话">➕</button>
+        </div>
+        <ul class="chat-list" id="chat-list"></ul>
+    </aside>
+
+    <div class="main-content">
+        <header class="app-header">
+            <button id="toggle-sidebar-btn" class="icon-btn" title="切换侧边栏">☰</button>
+            <div class="title">焕分小六</div>
+            <button id="settings-btn" class="icon-btn" aria-label="设置" title="设置">⚙️</button>
+        </header>
+
+        <!-- 预设提示词面板 -->
+        <div class="prompts-panel" id="prompts-panel">
+            <button class="prompt-btn" data-prompt="给我讲一个有趣的故事吧">📖 讲故事</button>
+            <button class="prompt-btn" data-prompt="帮我辅导作业">✏️ 作业辅导</button>
+            <button class="prompt-btn" data-prompt="推荐一个适合全家的亲子游戏">🎮 亲子游戏</button>
+            <button class="prompt-btn" data-prompt="给我一些健康生活的建议">💚 健康建议</button>
+            <button class="prompt-btn" data-prompt="教我一个简单的科学小实验">🔬 科学实验</button>
+            <button class="prompt-btn" data-prompt="推荐一些适合孩子的书籍">📚 推荐书籍</button>
+        </div>
+
+        <main class="chat" id="chat">
+            <ul class="messages" id="messages" aria-live="polite"></ul>
+        </main>
+
+        <form id="composer" class="composer" autocomplete="off">
+            <button type="button" id="voice-btn" class="icon-btn voice-btn" aria-label="语音输入" title="语音输入">🎤</button>
+            <textarea id="input" placeholder="输入消息...（回车发送，Shift+Enter 换行）" rows="1"></textarea>
+            <button type="submit" id="send-btn">发送</button>
+        </form>
+    </div>
+
+    <!-- 设置面板 -->
+    <div id="settings" class="settings" aria-hidden="true">
+        <div class="settings-panel">
+            <h2>小六设置</h2>
+            <label>API 地址
+                <input id="api-url" type="url" placeholder="https://api.deepseek.com/v1/chat/completions" />
+            </label>
+            <label>API Key
+                <input id="api-key" type="password" placeholder="在此粘贴你的 API Key" />
+            </label>
+            <label>模型
+                <input id="model" type="text" placeholder="deepseek-chat" />
+            </label>
+            <label class="checkbox-row">
+                <input id="use-mock" type="checkbox" /> 使用本地 mock（便于测试）
+            </label>
+            <div class="settings-actions">
+                <button id="save-settings">保存</button>
+                <button id="close-settings" class="muted">关闭</button>
+            </div>
+            <p class="note">💡 提示：请妥善保管你的 API Key，不要分享给他人。</p>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" aria-hidden="true"></div>
+</div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
