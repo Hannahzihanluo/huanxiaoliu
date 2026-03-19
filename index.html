@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>焕分小六 — 家庭亲子助手</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Markdown渲染库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- 代码高亮库 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/atom-one-light.min.css">
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/core.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/languages/javascript.min.js"></script>
@@ -15,6 +13,9 @@
 </head>
 <body>
 <div class="app">
+    <!-- 侧边栏遮罩 -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <!-- 会话历史侧边栏 -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -31,15 +32,8 @@
             <button id="settings-btn" class="icon-btn" aria-label="设置" title="设置">⚙️</button>
         </header>
 
-        <!-- 预设提示词面板 -->
-        <div class="prompts-panel" id="prompts-panel">
-            <button class="prompt-btn" data-prompt="给我讲一个有趣的故事吧">📖 讲故事</button>
-            <button class="prompt-btn" data-prompt="帮我辅导作业">✏️ 作业辅导</button>
-            <button class="prompt-btn" data-prompt="推荐一个适合全家的亲子游戏">🎮 亲子游戏</button>
-            <button class="prompt-btn" data-prompt="给我一些健康生活的建议">💚 健康建议</button>
-            <button class="prompt-btn" data-prompt="教我一个简单的科学小实验">🔬 科学实验</button>
-            <button class="prompt-btn" data-prompt="推荐一些适合孩子的书籍">📚 推荐书籍</button>
-        </div>
+        <!-- 快捷提示词面板（动态渲染） -->
+        <div class="prompts-panel" id="prompts-panel"></div>
 
         <main class="chat" id="chat">
             <ul class="messages" id="messages" aria-live="polite"></ul>
@@ -48,7 +42,7 @@
         <form id="composer" class="composer" autocomplete="off">
             <button type="button" id="voice-btn" class="icon-btn voice-btn" aria-label="语音输入" title="语音输入">🎤</button>
             <textarea id="input" placeholder="输入消息...（回车发送，Shift+Enter 换行）" rows="1"></textarea>
-            <button type="submit" id="send-btn">发送</button>
+            <button type="submit" id="send-btn"><span class="send-text">发送</span><span class="send-loader"></span></button>
         </form>
     </div>
 
@@ -68,6 +62,21 @@
             <label class="checkbox-row">
                 <input id="use-mock" type="checkbox" /> 使用本地 mock（便于测试）
             </label>
+            <label>系统提示词
+                <textarea id="system-prompt" rows="3" placeholder="设定助手的角色和行为..."></textarea>
+            </label>
+
+            <div class="prompt-manager">
+                <h3>快捷提示管理</h3>
+                <div id="prompt-manager-list"></div>
+                <div class="prompt-add-form">
+                    <input id="new-prompt-emoji" type="text" placeholder="emoji" maxlength="4" class="prompt-emoji-input" />
+                    <input id="new-prompt-label" type="text" placeholder="标签" class="prompt-label-input" />
+                    <input id="new-prompt-text" type="text" placeholder="提示词内容" class="prompt-text-input" />
+                    <button type="button" id="add-prompt-btn" class="prompt-add-btn">添加</button>
+                </div>
+            </div>
+
             <div class="settings-actions">
                 <button id="save-settings">保存</button>
                 <button id="close-settings" class="muted">关闭</button>
